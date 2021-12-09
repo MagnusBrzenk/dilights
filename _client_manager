@@ -1,0 +1,118 @@
+#!/bin/bash
+#
+# Starter point for operating the client and server combo
+
+### Params and prelims
+source .env
+choice=$1
+FILE_NAME=$(cat "package.json" | jq -r '.name')
+VERSION=$(cat "package.json" | jq -r '.version')
+export BLA="\033[30m"
+export RED="\033[31m"
+export GRE="\033[32m"
+export YEL="\033[33m"
+export BLU="\033[34m"
+export MAG="\033[35m"
+export CYA="\033[36m"
+export WHI="\033[37m"
+
+#######################################
+# Prints options for this script
+# Globals:
+#   None
+# Arguments:
+#   None
+#######################################
+function _usage() {
+  echo -e """${GRE}
+  =============================================================
+    _client_manager usage:
+  -------------------------------------------------------------
+  ${WHI}help  ${GRE}-  Show this usage
+  ${WHI}build ${GRE}-  Build and export nextjs app
+  ${WHI}dev   ${GRE}-  Develop client (port 3000 default)
+  =============================================================
+  """
+}
+
+#######################################
+# Build and export static app
+# Globals:
+#   None
+# Arguments:
+#   None
+#######################################
+_build_and_export() {
+  ./node_modules/.bin/next build && ./node_modules/.bin/next export
+}
+
+#######################################
+# Run nexjs dev server
+# Globals:
+#   None
+# Arguments:
+#   Optional port number
+#######################################
+_dev_client() {
+  echo -e "${GRE}>>> Running next dev; can be run with -p ${RED}PORT${GRE} -H ${RED}HOST${WHI}"
+  sleep 3
+  rm -rf .next
+  ./node_modules/.bin/next dev $@
+}
+
+#######################################
+# Run nexjs prod server after building
+# Globals:
+#   None
+# Arguments:
+#   Optional port number
+#######################################
+_start_server() {
+  echo -e "${GRE}>>> Running next start; can be run with -p ${RED}PORT${GRE} -H ${RED}HOST${WHI}"
+  sleep 3
+  ./node_modules/.bin/next start $@
+}
+
+#######################################
+# Deploy and invalidate
+# Globals:
+#   None
+# Arguments:
+#   None
+#######################################
+_deploy_and_invalidate() {
+  ./_deploy_aws && ./_invalidate_cloudfront
+}
+
+###
+###
+###
+###
+###
+###
+
+main() {
+  option=$1
+  shift
+  case "$option" in
+  "" | "--help" | "help")
+    _usage
+    ;;
+  "build" | "--build")
+    _build_and_export
+    ;;
+  "dev" | "--dev")
+    _dev_client $@
+    ;;
+  "start" | "--start")
+    _start_server $@
+    ;;
+  *)
+    echo >&2 "Invalid option: $@"
+    _usage
+    return 1
+    ;;
+  esac
+}
+
+main "$@"
