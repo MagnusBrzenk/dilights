@@ -20,6 +20,8 @@ const offExampleUrls = [
   "di-example-off-4.jpg",
 ];
 
+const basePath = true ? "/dilights" : "";
+
 const Home: NextPage = () => {
   return (
     <div className={styles.homePageContainer}>
@@ -90,7 +92,7 @@ const Home: NextPage = () => {
               <LightsImage
                 width={"auto"}
                 height={"auto"}
-                url={`/jpgs/${onExampleUrl}`}
+                url={`${basePath}/jpgs/${onExampleUrl}`}
               />
             </div>
           ))}
@@ -113,7 +115,7 @@ const Home: NextPage = () => {
               <LightsImage
                 width={"auto"}
                 height={"auto"}
-                url={`/jpgs/${onExampleUrl}`}
+                url={`${basePath}/jpgs/${onExampleUrl}`}
               />
             </div>
           ))}
