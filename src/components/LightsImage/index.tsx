@@ -39,7 +39,6 @@ export const LightsImage = (props: IProps) => {
   }, []);
 
   const dateStr = date.toLocaleTimeString();
-  console.log("Date", dateStr);
 
   return (
     <div
@@ -53,7 +52,7 @@ export const LightsImage = (props: IProps) => {
         src={`${url}?date=${date.toISOString()}}`}
         alt=""
         style={{
-          border: `solid ${highlightColor ? 5 : 0}px ${highlightColor}`,
+          border: `solid ${highlightColor ? 10 : 0}px ${highlightColor}`,
           boxSizing: "border-box",
           width: "100%",
           height: "auto",

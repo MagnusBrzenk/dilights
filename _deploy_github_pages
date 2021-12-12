@@ -1,26 +1,22 @@
 #! /bin/bash
 
 # Details to deploy client to github pages
-source .env
-BASE_HREF="$GITHUB_REPO_NAME"
+source .env.local
 
 echo -e """ \033[32m
 ===========================
 DEPLOYING BUNDLES TO GITHUB
-BASE_HREF : \033[36m${BASE_HREF} \033[32m
+BASE_HREF : \033[36m${GITHUB_REPO_NAME} \033[32m
 =========================== \033[0m
 """
 
 # Build pages for github deployment
-# PUBLIC_URL="/$BASE_HREF/" REACT_APP_BASE_HREF="/$BASE_HREF/" npm run build
-# PUBLIC_URL="/$BASE_HREF/" REACT_APP_BASE_HREF="/$BASE_HREF/" npm run build
-
-# rsync -a out/ "build-$BASE_HREF/"
+NEXT_PUBLIC_BASE_HREF="/$GITHUB_REPO_NAME" ./_client_manager build
 
 # Build some node code
 read -r -d '' NODECMD <<EOM
   const ghpages = require("gh-pages");
-  ghpages.publish("out", function (err) {
+  ghpages.publish("out", {dotfiles: true}, function (err) {
     if (!!err) {
       console.log("OH NO! STH WENT WRONG :(", err);
       process.exit(1);
@@ -28,11 +24,6 @@ read -r -d '' NODECMD <<EOM
     console.log("DEPLOYED TO: https://${GITHUB_USER_NAME}.github.io/${GITHUB_REPO_NAME}/");
   })
 EOM
-
-# ---
-echo "----------"
-# ls "build-$BASE_HREF/static/js"
-# rm "build-$BASE_HREF/static/js/"*.map
 
 # Execute node code
 node -e "$NODECMD"

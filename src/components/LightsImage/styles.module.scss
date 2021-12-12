@@ -5,9 +5,12 @@
 
   .dateLabel {
     position: absolute;
-    bottom: 10px;
-    left: 10px;
+    bottom: 5px;
+    left: 5px;
     color: white;
     font-weight: bold;
+    background-color: blue;
+    padding: 10px;
+    box-sizing: border-box;
   }
 }

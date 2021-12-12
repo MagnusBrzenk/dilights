@@ -20,7 +20,12 @@ const offExampleUrls = [
   "di-example-off-4.jpg",
 ];
 
-const basePath = true ? "/dilights" : "";
+// const basePath = true ? "/dilights" : "";
+// const basePath = process.env.NEXT_PUBLIC_BASE_HREF || "/";
+const basePath =
+  process.env.NODE_ENV === "production"
+    ? process.env.NEXT_PUBLIC_BASE_HREF || ""
+    : "";
 
 const Home: NextPage = () => {
   return (
@@ -32,7 +37,7 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>Are DI Lights On?</h1>
+        <h1 className={styles.title}>Are DI Lights On at Govenors Park?</h1>
 
         <h2>Latest Image </h2>
         <div
@@ -49,32 +54,25 @@ const Home: NextPage = () => {
           />
         </div>
         <h4> (Refreshes every 10s)</h4>
-        <h2>How it works</h2>
+        <h2>How It Works</h2>
 
         <div>
           <p>
             {`This is a simple tool to help you decide if the lights are on at
-          Govenors Park, Daniel Island, Charleston, SC. The tool works by showing
+          Govenors Park, Daniel Island, Charleston, SC. It works by showing
           the latest still image from highway webcam
           "I-526 E @ MM 26 (Wando Bridge)" available from the SC Department of
           Transportation website. You can find the live footage by going `}
-            <a href={scdotUrl}>here</a>
-            {` and selecting the camera icon where I-526 enters Mount Pleasant.
-          If the lights are on at Govenors Parrk then you will see a row of about 5-6 white dots
+            <a href={scdotUrl}>
+              <span style={{ color: "blue", textDecoration: "underline" }}>
+                here
+              </span>
+            </a>
+            {` and selecting the camera icon near to where I-526 enters Mount Pleasant.
+          If the lights are on at Govenors Park then you will see a row of about 5-6 white dots
           to the right of the highway. Reference photos are included below showing when
           the lights are on and off.`}
           </p>
-          {/* <p>
-            <b>Beware!</b> Trees block some of the lights, so the wind will
-            cause you to see different numbers of dots!
-          </p>
-          <p>
-            <b>Beware!</b> When it is dark, the camera will sometimes produce a
-            weird reflection effect whereby the lights of cars can appear to
-            move off the highway and into the zone where the DI lights would be.
-            For this reason, you may want to check the latest image through a
-            few refreshes to be confident of your conclusion.
-          </p> */}
         </div>
 
         <h2>Reference Images</h2>

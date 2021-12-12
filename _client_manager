@@ -3,7 +3,7 @@
 # Starter point for operating the client and server combo
 
 ### Params and prelims
-source .env
+source .env.local
 choice=$1
 FILE_NAME=$(cat "package.json" | jq -r '.name')
 VERSION=$(cat "package.json" | jq -r '.version')
@@ -43,7 +43,7 @@ function _usage() {
 #   None
 #######################################
 _build_and_export() {
-  ./node_modules/.bin/next build && ./node_modules/.bin/next export
+  ./node_modules/.bin/next build && ./node_modules/.bin/next export && touch out/.nojekyll
 }
 
 #######################################
